@@ -7,11 +7,11 @@ public class CarRental {
         Scanner scanner = new Scanner(System.in);
 
         Car[] cars = {
-                new Car("ABC123", "Toyota Corolla", 50000),
-                new Car("DEF456", "Honda Civic", 45000),
-                new Car("GHI789", "Ford Focus", 60000),
-                new Car("JKL012", "BMW X3", 30000),
-                new Car("MNO345", "Audi A4", 40000)
+                new Car("HIV690", "Toyota Corolla", 50000),
+                new Car("SPI420", "Honda Civic", 45000),
+                new Car("JWX999", "Ford Focus", 60000),
+                new Car("AL4K5O", "BMW X3", 30000),
+                new Car("GPK100", "Audi A4", 40000)
         };
 
         while (true) {
