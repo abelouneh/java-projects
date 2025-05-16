@@ -23,15 +23,20 @@ public class GameMechanics {
             wordToGuess = WordGetter.getRandomWord().toLowerCase();
         } catch (Exception e) {
             e.printStackTrace();
-            wordToGuess = "default"; // fallback word if API call fails
+            wordToGuess = "default";
         }
 
         maskedWord = new StringBuilder();
-        for (int i = 0; i < wordToGuess.length(); i++) {
-            maskedWord.append("_");
-        }
-        attemptsLeft = MAX_ATTEMPTS;
 
+        for (int i = 0; i < wordToGuess.length(); i++) {
+            if (i == 0 || i == wordToGuess.length() - 1) {
+                maskedWord.append(wordToGuess.charAt(i)); // reveal first and last
+            } else {
+                maskedWord.append("_");
+            }
+        }
+
+        attemptsLeft = MAX_ATTEMPTS;
         updateDisplay();
     }
 
@@ -45,6 +50,7 @@ public class GameMechanics {
         boolean correct = false;
 
         for (int i = 0; i < wordToGuess.length(); i++) {
+            if ((i == 0 || i == wordToGuess.length() - 1)) continue; // skip first & last
             if (wordToGuess.charAt(i) == guessedChar && maskedWord.charAt(i) == '_') {
                 maskedWord.setCharAt(i, guessedChar);
                 correct = true;
@@ -58,16 +64,14 @@ public class GameMechanics {
         updateDisplay();
 
         if (isGameWon()) {
-            user.addScore(10); // add 10 points to user's in-memory score
-
+            user.addScore(10);
             try {
                 UserData userData = new UserData();
-                userData.updateScore(user.getUsername(), user.getScore()); // update DB with new total score
+                userData.updateScore(user.getUsername(), user.getScore());
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-
-            updateScoreLabel(); // update UI score display
+            updateScoreLabel();
             showEndDialog("🎉 Congratulations! You won!");
         } else if (attemptsLeft == 0) {
             showEndDialog("💀 Game Over! The word was: " + wordToGuess);
