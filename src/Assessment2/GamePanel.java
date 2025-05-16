@@ -11,6 +11,9 @@ public class GamePanel extends JPanel {
     private JTextField guessField;
     private JButton guessButton;
 
+    private JButton logoutButton;         // Logout button
+    private JButton leaderboardButton;    // Leaderboard button
+
     private GameUserInterface parent;
     private GameMechanics mechanics;
     private User currentUser;
@@ -23,12 +26,24 @@ public class GamePanel extends JPanel {
     private void initializeComponents() {
         setLayout(new BorderLayout());
 
-        // Top panel with score and attempts
-        JPanel topPanel = new JPanel(new GridLayout(1, 2));
+        // Top panel with score, attempts and buttons
+        JPanel topPanel = new JPanel(new BorderLayout());
+
+        JPanel labelsPanel = new JPanel(new GridLayout(1, 2));
         scoreLabel = new JLabel("Score: 0");
         attemptsLabel = new JLabel("Attempts Left: 6");
-        topPanel.add(scoreLabel);
-        topPanel.add(attemptsLabel);
+        labelsPanel.add(scoreLabel);
+        labelsPanel.add(attemptsLabel);
+
+        JPanel buttonsPanel = new JPanel();
+        logoutButton = new JButton("Logout");
+        leaderboardButton = new JButton("Leaderboard");
+        buttonsPanel.add(leaderboardButton);
+        buttonsPanel.add(logoutButton);
+
+        topPanel.add(labelsPanel, BorderLayout.CENTER);
+        topPanel.add(buttonsPanel, BorderLayout.EAST);
+
         add(topPanel, BorderLayout.NORTH);
 
         // Center with masked word
@@ -51,6 +66,22 @@ public class GamePanel extends JPanel {
             String guess = guessField.getText().trim();
             guessField.setText("");
             mechanics.handleGuess(guess);
+        });
+
+        // Leaderboard button action
+        leaderboardButton.addActionListener(e -> parent.switchPanel("leaderboard"));
+
+        // Logout button action: update score and switch to login
+        logoutButton.addActionListener(e -> {
+            try {
+                UserData userData = new UserData();
+                userData.updateScore(currentUser.getUsername(), currentUser.getScore());
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Error updating score on logout: " + ex.getMessage());
+            }
+            parent.setCurrentUser(null);
+            parent.switchPanel("login");
         });
     }
 
