@@ -13,7 +13,7 @@ public class LoginPanel extends JPanel {
     public LoginPanel(GameUserInterface parent) {
         this.parent = parent;
 
-        setLayout(new GridLayout(3, 2));
+        setLayout(new GridLayout(4, 2));  // Increased rows for new button
 
         add(new JLabel("Username:"));
         usernameField = new JTextField();
@@ -26,7 +26,13 @@ public class LoginPanel extends JPanel {
         JButton loginButton = new JButton("Login");
         add(loginButton);
 
+        JButton registerButton = new JButton("Register");  // New register button
+        add(registerButton);
+
         loginButton.addActionListener(e -> performLogin());
+
+        // Switch to register panel on button click
+        registerButton.addActionListener(e -> parent.switchPanel("register"));
     }
 
     private void performLogin() {
