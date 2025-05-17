@@ -1,5 +1,4 @@
 package week01;
-
 public class Pet {
     String name ;
     String specie ;
