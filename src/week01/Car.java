@@ -32,7 +32,7 @@ public class Car {
     // Return the car and update its kilometers
     public void returnCar(int newKilometers) {
         isRented = false;
-        kilometers = newKilometers;
+        kilometers += newKilometers;
     }
 
     // Display the car's information in a user-friendly format
